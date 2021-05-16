@@ -2,12 +2,13 @@ data/
 project_env/
 node_modules/
 config.json
+config_dummy.json
 __pycache__
 *.py[cod]
 *$py.class
 ~*.xlsx
 .mypy_cache/
-
+static/file_folder/
 # Distribution / packaging 
 .Python build/ 
 develop-eggs/ 

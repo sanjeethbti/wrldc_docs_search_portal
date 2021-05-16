@@ -2,5 +2,7 @@
     "appPrefix": "/docs_search",
     "flaskSecret": "123",
     "mode": "d",
-    "flaskPort": 80
+    "flaskPort": 80,
+    "upload_folder" : "C:\\Users\\chaud\\Desktop\\monthly\\wrldc_docs_search_portal\\static\\file_folder",
+    "appDbConnStr": "WRLDC_REST_SUBSET/restsubset#123@10.2.100.56:15210/ORCLWR"
 }
