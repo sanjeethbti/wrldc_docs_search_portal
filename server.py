@@ -7,6 +7,13 @@ from werkzeug.middleware.dispatcher import DispatcherMiddleware
 from werkzeug.exceptions import NotFound
 from typing import Any, cast
 from src.appConfig import initAppConfig
+from src.routeControllers.oauth import oauthPage,bcrypt,login_manager
+from src.routeControllers.docUpload import  docUploadPage
+from flask_bcrypt import Bcrypt
+from flask_login import LoginManager
+
+
+
 
 # get application config
 appConfig = initAppConfig()
@@ -19,25 +26,39 @@ app.secret_key = appConfig['flaskSecret']
 
 # limit max upload file size to 100 MB
 app.config['MAX_CONTENT_LENGTH'] = 100 * 1024 * 1024
+# bcrypt = Bcrypt(app)
+bcrypt.init_app(app)
+login_manager.init_app(app)
+
+# login_manager = LoginManager(app)
+# login view is used to tell login manager where is our login route in order to check login_required decorator, login is funtion name
+login_manager.login_view = 'login'
+# bbotstrap alert category message
+login_manager.login_message_category = 'info'
 
 
 @app.route('/')
 def index():
-    return render_template('home.html.j2')
+    return render_template('index.html.j2')
     # return "Hello"
 
 
-hostedApp = Flask(__name__)
 
-cast(Any, hostedApp).wsgi_app = DispatcherMiddleware(NotFound(), {
-    appPrefix: app
-})
+app.register_blueprint(oauthPage, url_prefix='/oauth')
+app.register_blueprint(docUploadPage, url_prefix='/Upload')
+
+# hostedApp = Flask(__name__)
+
+# cast(Any, hostedApp).wsgi_app = DispatcherMiddleware(NotFound(), {
+#     appPrefix: app
+# })
 
 if __name__ == '__main__':
-    serverMode: str = appConfig['mode']
-    if serverMode.lower() == 'd':
-        hostedApp.run(host="0.0.0.0", port=int(
-            appConfig['flaskPort']), debug=True)
-    else:
-        serve(app, host='0.0.0.0', port=int(
-            appConfig['flaskPort']), url_prefix=appPrefix, threads=1)
+     app.run(debug=True)
+    # serverMode: str = appConfig['mode']
+    # if serverMode.lower() == 'd':
+    #     hostedApp.run(host="0.0.0.0", port=int(
+    #         appConfig['flaskPort']), debug=True)
+    # else:
+    #     serve(app, host='0.0.0.0', port=int(
+    #         appConfig['flaskPort']), url_prefix=appPrefix, threads=1)

@@ -2,5 +2,7 @@
     "appPrefix": "/docs_search",
     "flaskSecret": "123",
     "mode": "d",
-    "flaskPort": 80
+    "flaskPort": 80,
+    "upload_folder" : "",
+    "appDbConnStr": ""
 }

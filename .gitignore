@@ -7,7 +7,7 @@ __pycache__
 *$py.class
 ~*.xlsx
 .mypy_cache/
-
+static/file_folder/
 # Distribution / packaging 
 .Python build/ 
 develop-eggs/ 

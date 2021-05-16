@@ -1,0 +1,190 @@
+{% extends "layoutBase.html.j2" %}
+{% block content %}
+<div class="container">
+    <form method="POST" action="" enctype = "multipart/form-data">
+        {{ form.hidden_tag() }}
+        <!-- Text input -->
+        <div class="form-outline mb-4">
+            <!-- <input type="text" id="form6Example3" class="form-control" /> -->
+                {% if form.regulationName.errors %}
+                    {{ form.regulationName(class="form-control form-control-lg is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.regulationName.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.regulationName(class="form-control form-control-lg") }}
+                {% endif %}
+            <!-- <label class="form-label" for="form6Example3">Regulation Name</label> -->
+            {{ form.regulationName.label(class="form-label") }}
+        </div>
+
+         <!-- 2 column grid layout with text inputs for the first and last names -->
+        <div class="row mb-4">
+            <div class="col">
+            <div class="form-outline">
+                <!-- <select class="form-control" id="exampleFormControlSelect1">
+                    <option>Regulation</option>
+                    <option>SOR</option>
+                    <option>Corrigendum</option>
+                  </select> -->
+                    {% if form.type.errors %}
+                        {{ form.type(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.type.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.type(class="form-control form-control-lg") }}
+                    {% endif %}
+                <!-- <label class="form-label" for="form6Example1"> Type</label> -->
+                {{ form.type.label(class="form-label") }}
+            </div>
+            </div>
+            <div class="col">
+            <div class="form-outline">
+                    {% if form.amendmentNo.errors %}
+                        {{ form.amendmentNo(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.amendmentNo.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.amendmentNo(class="form-control form-control-lg") }}
+                    {% endif %}
+                <!-- <label class="form-label" for="form6Example1"> Type</label> -->
+                {{ form.amendmentNo.label(class="form-label") }}
+            </div>
+            </div>
+        </div>
+
+         <!-- 2 column grid layout with text inputs for the first and last names -->
+         <div class="row mb-4">
+            <div class="col">
+            <div class="form-outline">
+                <!-- <input type="number" id="form6Example10" class="form-control" /> -->
+                <!-- <label class="form-label" for="form6Example10">Notification Date</label> -->
+                    {% if form.notificationDate.errors %}
+                        {{ form.notificationDate(class="form-control form-control-lg is-invalid",type="Date") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.notificationDate.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.notificationDate(class="form-control form-control-lg",type="Date") }}
+                    {% endif %}
+                {{ form.notificationDate.label(class="form-label") }}
+            </div>
+            </div>
+            <div class="col">
+            <div class="form-outline">
+                <!-- <input type="number" id="form6Example11" class="form-control" />
+                <label class="form-label" for="form6Example11">Effective Date</label> -->
+                    {% if form.effectiveDate.errors %}
+                        {{ form.effectiveDate(class="form-control form-control-lg is-invalid",type="Date") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.effectiveDate.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.effectiveDate(class="form-control form-control-lg",type="Date") }}
+                    {% endif %}
+                {{ form.effectiveDate.label(class="form-label") }}
+            </div>
+            </div>
+        </div>
+
+        <!-- Text input -->
+        <div class="form-outline mb-4">
+            <!-- <input type="text" id="form6Example4" class="form-control" />
+            <label class="form-label" for="form6Example4">Repeal Date</label> -->
+                    {% if form.repealDate.errors %}
+                        {{ form.repealDate(class="form-control form-control-lg is-invalid",type="Date") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.repealDate.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.repealDate(class="form-control form-control-lg",type="Date") }}
+                    {% endif %}
+                {{ form.repealDate.label(class="form-label") }}
+        </div>
+
+        <!-- Text input -->
+        <div class="form-outline mb-4">
+            <!-- <input type="text" id="form6Example5" class="form-control" />
+            <label class="form-label" for="form6Example5">Key Words by Admin</label> -->
+                    {% if form.keyWordsByAdmin.errors %}
+                        {{ form.keyWordsByAdmin(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.keyWordsByAdmin.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.keyWordsByAdmin(class="form-control form-control-lg") }}
+                    {% endif %}
+                {{ form.keyWordsByAdmin.label(class="form-label") }}
+        </div>
+
+        <!-- Number input -->
+        <div class="form-outline mb-4">
+            <!-- <input type="number" id="form6Example6" class="form-control" />
+            <label class="form-label" for="form6Example6">Doc Ref No</label> -->
+                    {% if form.docRefNo.errors %}
+                        {{ form.docRefNo(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.docRefNo.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.docRefNo(class="form-control form-control-lg") }}
+                    {% endif %}
+                {{ form.docRefNo.label(class="form-label") }}
+        </div>
+
+        <!-- Text input -->
+        <div class="form-outline mb-4">
+            <!-- <input type="text" id="form6Example9" class="form-control" />
+            <label class="form-label" for="form6Example9">Upload PDF File</label> -->
+            
+                    {{ form.uploadPDFFile(class="form-control-file") }}
+                    {% if form.uploadPDFFile.errors %}
+                        {% for error in form.uploadPDFFile.errors %}
+                            <!-- here text-danger is for showing invalid file -->
+                            <span class="text-danger">{{ error }}</span></br>
+                        {% endfor %}
+                    {% endif %}
+                    {{ form.uploadPDFFile.label() }}
+        </div>
+
+        <!-- Text input -->
+        <div class="form-outline mb-4">
+            <!-- <input type="text" id="form6Example7" class="form-control" />
+            <label class="form-label" for="form6Example7">Link to CERC Site PDF</label> -->
+                    {% if form.linkToCERCSitePDF.errors %}
+                        {{ form.linkToCERCSitePDF(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.linkToCERCSitePDF.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.linkToCERCSitePDF(class="form-control form-control-lg") }}
+                    {% endif %}
+                {{ form.linkToCERCSitePDF.label(class="form-label") }}
+        </div>
+
+        <!-- Submit button -->
+        <!-- <button type="submit" class="btn btn-primary btn-block mb-4">Submit</button> -->
+        {{ form.submit(class="btn btn-primary btn-block mb-4") }}
+    </form>
+</div>
+{% endblock content %}
