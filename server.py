@@ -7,12 +7,10 @@ from werkzeug.middleware.dispatcher import DispatcherMiddleware
 from werkzeug.exceptions import NotFound
 from typing import Any, cast
 from src.appConfig import initAppConfig
-from src.routeControllers.oauth import oauthPage,bcrypt,login_manager
-from src.routeControllers.docUpload import  docUploadPage
+from src.routeControllers.oauth import oauthPage, bcrypt, login_manager
+from src.routeControllers.docUpload import docUploadPage
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
-
-
 
 
 # get application config
@@ -43,22 +41,20 @@ def index():
     # return "Hello"
 
 
-
 app.register_blueprint(oauthPage, url_prefix='/oauth')
 app.register_blueprint(docUploadPage, url_prefix='/Upload')
 
-# hostedApp = Flask(__name__)
+hostedApp = Flask(__name__)
 
-# cast(Any, hostedApp).wsgi_app = DispatcherMiddleware(NotFound(), {
-#     appPrefix: app
-# })
+cast(Any, hostedApp).wsgi_app = DispatcherMiddleware(NotFound(), {
+    appPrefix: app
+})
 
 if __name__ == '__main__':
-     app.run(debug=True)
-    # serverMode: str = appConfig['mode']
-    # if serverMode.lower() == 'd':
-    #     hostedApp.run(host="0.0.0.0", port=int(
-    #         appConfig['flaskPort']), debug=True)
-    # else:
-    #     serve(app, host='0.0.0.0', port=int(
-    #         appConfig['flaskPort']), url_prefix=appPrefix, threads=1)
+    serverMode: str = appConfig['mode']
+    if serverMode.lower() == 'd':
+        hostedApp.run(host="0.0.0.0", port=int(
+            appConfig['flaskPort']), debug=True)
+    else:
+        serve(app, host='0.0.0.0', port=int(
+            appConfig['flaskPort']), url_prefix=appPrefix, threads=1)
