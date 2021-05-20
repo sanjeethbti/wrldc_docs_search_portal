@@ -3,6 +3,6 @@
     "flaskSecret": "123",
     "mode": "d",
     "flaskPort": 80,
-    "upload_folder" : "",
+    "upload_folder" : "file_folder",
     "appDbConnStr": ""
 }

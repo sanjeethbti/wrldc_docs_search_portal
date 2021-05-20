@@ -8,7 +8,7 @@ from werkzeug.exceptions import NotFound
 from typing import Any, cast
 from src.appConfig import initAppConfig
 from src.routeControllers.oauth import oauthPage, bcrypt, login_manager
-from src.routeControllers.docUpload import docUploadPage
+from src.routeControllers.docUpload import docsPage
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 
@@ -42,7 +42,7 @@ def index():
 
 
 app.register_blueprint(oauthPage, url_prefix='/oauth')
-app.register_blueprint(docUploadPage, url_prefix='/Upload')
+app.register_blueprint(docsPage, url_prefix='/docs')
 
 hostedApp = Flask(__name__)
 

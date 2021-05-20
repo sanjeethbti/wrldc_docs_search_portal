@@ -2,7 +2,7 @@
     {% if current_user.is_authenticated %}
 
          <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('docUpload.fileUpload') }}">
+            <a class="nav-link" href="{{ url_for('docs.fileUpload') }}">
                 <span class="mr-2 d-lg-inline text-gray-600">Upload File</span>
             </a>
         </li>
