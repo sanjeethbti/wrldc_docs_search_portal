@@ -1,7 +1,7 @@
 import datetime as dt
 from src.repos.insertFilesDetails import insertFileDetails
 from src.repos.getLoginUser import getLoginUser
-
+from src.repos.getList import getList
 
 class cRepo():
     """Repository class for Codes data of application
@@ -37,3 +37,16 @@ class cRepo():
         """
         user = getLoginUser(self.appDbConnStr, userId)
         return user
+
+
+    def getList(self):
+        """fetches codes between 2 dates from app db
+
+        Args:
+            startDt (dt.datetime): [description]
+            endDt (dt.datetime): [description]
+
+        Returns:
+            List[ICode]: list of code objects
+        """
+        return getList(self.appDbConnStr)

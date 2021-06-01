@@ -102,3 +102,29 @@ def downloadDocument(req_path):
         return send_file(abs_path)
     else:
         return abort(404)
+
+
+
+@docsPage.route('list/', methods=['GET'])
+@roles_required(['a'])
+def list():
+    appConf = getAppConfig()
+    cRepo_init = cRepo(appConf['appDbConnStr'])
+    docDetails= cRepo_init.getList()
+    
+    return render_template('list.html.j2', data={'docDetails': docDetails})
+
+
+
+@docsPage.route('/delete/<codeId>', methods=['GET', 'POST'])
+@roles_required(['a'])
+def delete(codeId: int):
+    flash('Could not delete the code', category='error')
+
+
+
+@docsPage.route('/edit/<codeId>', methods=['GET', 'POST'])
+@roles_required(['code_book_editor'])
+def edit(codeId: int):
+    flash('Could not delete the code', category='error')
+

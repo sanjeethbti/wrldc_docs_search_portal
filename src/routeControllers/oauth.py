@@ -48,7 +48,7 @@ def login():
             #it make to redirect to initial request user raised before it was not login
             #get method will return none if next key doent exit,so we use get rather than []
             next_page = request.args.get('next')
-            return redirect(next_page) if next_page else render_template('home.html.j2')
+            return redirect(next_page) if next_page else redirect(url_for('docs.list'))
         else:
             flash('Login Unsuccessful. Please check email and password', 'danger')
     return render_template('login.html', title='Login',form=form)

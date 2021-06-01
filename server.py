@@ -8,7 +8,7 @@ from werkzeug.exceptions import NotFound
 from typing import Any, cast
 from src.appConfig import initAppConfig
 from src.routeControllers.oauth import oauthPage, bcrypt, login_manager
-from src.routeControllers.docUpload import docsPage
+from src.routeControllers.docs import docsPage
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 
