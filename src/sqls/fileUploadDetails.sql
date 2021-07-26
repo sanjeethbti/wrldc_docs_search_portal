@@ -10,4 +10,6 @@ CREATE TABLE WRLDC_REST_SUBSET.FILE_INFO (
     doc_ref_no NUMBER(25) NOT NULL,
     pdf_file_name VARCHAR2(8) NOT NULL,
     cerc_Site_pdf_link VARCHAR2(100)
+    CONSTRAINT uk_pk PRIMARY KEY (id)
+
 );

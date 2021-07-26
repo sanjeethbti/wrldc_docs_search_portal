@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session, send_file, abort
-from wtforms import Form, StringField, validators, DateTimeField, BooleanField, IntegerField, DateField, SubmitField, FileField, SelectField
+from wtforms import Form, StringField, validators, DateTimeField, BooleanField, IntegerField, DateField, SubmitField, FileField, SelectField,TextAreaField,HiddenField
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
@@ -7,8 +7,12 @@ from src.repos.repo import cRepo
 from src.appConfig import getAppConfig
 import os
 import secrets
-from flask_login import login_required
+from flask_login import login_required,current_user
 from src.security.decorators import roles_required
+import werkzeug
+from src.app.editDocUploadViaForm import editDocUploadViaForm
+from src.app.createDocUploadEditForm import createDocUploadEditForm
+
 
 
 class docUploadForm(FlaskForm):
@@ -32,6 +36,13 @@ class docUploadForm(FlaskForm):
                               FileAllowed(['pdf'])])
     linkToCERCSitePDF = StringField('Link to CERC Site PDF',
                                     validators=[DataRequired()])
+    submit = SubmitField('Submit')
+
+class updateKeywordForm(FlaskForm):
+    keywords_user = TextAreaField('Keywords By User',
+                                 validators=[DataRequired(), Length(min=2, max=20)])
+    docid=HiddenField('DocId')
+    kid=HiddenField('Kid')
     submit = SubmitField('Submit')
 
     # def validate_username(self, username):
@@ -77,7 +88,7 @@ def fileUpload():
                                                        docRefNo=form.docRefNo.data, uploadPDFFile=fileName, linkToCERCSitePDF=form.linkToCERCSitePDF.data)
         if isInsertSuccess:
             flash('Your Document uploaded successfully!', 'success')
-            return render_template('home.html.j2')
+            return redirect(url_for('docs.list'))
         else:
             flash('Document uploading failed!', 'danger')
     return render_template('docUpload.html', title='Upload Doc', form=form)
@@ -106,13 +117,17 @@ def downloadDocument(req_path):
 
 
 @docsPage.route('list/', methods=['GET'])
-@roles_required(['a'])
+@roles_required(['a','b'])
 def list():
+    form=updateKeywordForm()
     appConf = getAppConfig()
     cRepo_init = cRepo(appConf['appDbConnStr'])
-    docDetails= cRepo_init.getList()
-    
-    return render_template('list.html.j2', data={'docDetails': docDetails})
+    #print(current_user.name,current_user.roles)
+    if current_user.roles=='a':
+        docDetails= cRepo_init.getList()
+    else:
+        docDetails= cRepo_init.getListForUser(current_user.id)
+    return render_template('list.html.j2', data={'docDetails': docDetails},form=form)
 
 
 
@@ -123,8 +138,42 @@ def delete(codeId: int):
 
 
 
-@docsPage.route('/edit/<codeId>', methods=['GET', 'POST'])
-@roles_required(['code_book_editor'])
-def edit(codeId: int):
+@docsPage.route('/edit/<docId>', methods=['GET', 'POST'])
+@roles_required(['a'])
+def edit(docId: int):
+    appConf = getAppConfig()
+    cRepo_init = cRepo(appConf['appDbConnStr'])
+    doc = cRepo_init.getDocById(docId)
+    if doc == None:
+        raise werkzeug.exceptions.NotFound()
+    form = docUploadForm()
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            if form.uploadPDFFile.data:
+                fileName = save_picture(form.uploadPDFFile.data)
+            isSuccess = editDocUploadViaForm(docId=docId, cRepo=cRepo_init, form=form,doc=doc,fileName=fileName)
+            if isSuccess:
+                    flash('Successfully edited document details ', category='success')
+            else:
+                    flash('Could not edit the document details ', category='danger')
+            return redirect(url_for('docs.list'))
+    else:
+        form = createDocUploadEditForm(doc,form)
+    return render_template('editDocUploadForm.html.j2', form=form)
+
+
+@docsPage.route('/update', methods=[ 'POST'])
+@roles_required(['b'])
+def updateUKeyword():
+    appConf = getAppConfig()
+    cRepo_init = cRepo(appConf['appDbConnStr'])
+    form =updateKeywordForm()
+    isSuccess = cRepo_init.updateUserKeyword(keywords_user=form.keywords_user.data,docid=form.docid.data,kid=form.kid.data,userid=current_user.id)
     flash('Could not delete the code', category='error')
+    return redirect(url_for('docs.list'))
+
+
+
+
+
 

@@ -9,6 +9,8 @@ from typing import Any, cast
 from src.appConfig import initAppConfig
 from src.routeControllers.oauth import oauthPage, bcrypt, login_manager
 from src.routeControllers.docs import docsPage
+from src.routeControllers.user import userPage
+
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 
@@ -43,6 +45,8 @@ def index():
 
 app.register_blueprint(oauthPage, url_prefix='/oauth')
 app.register_blueprint(docsPage, url_prefix='/docs')
+app.register_blueprint(userPage, url_prefix='/user')
+
 
 hostedApp = Flask(__name__)
 

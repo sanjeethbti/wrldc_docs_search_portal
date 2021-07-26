@@ -23,7 +23,7 @@ def getLoginUser(appDbConnStr: str, userId:int):
         # get cursor and execute fetch sql
         dbCur = dbConn.cursor()
         dbCur.execute(metricsFetchSql,(userId,))
-        print(dbCur.statement)
+        #print(dbCur.statement)
         colNames = [row[0] for row in dbCur.description]
 
         # fetch all rows

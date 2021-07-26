@@ -9,6 +9,8 @@ from src.repos.repo import cRepo
 from src.appConfig import getAppConfig
 from flask_bcrypt import Bcrypt
 from src.security.user import User
+from src.security.decorators import roles_required
+
 
 
 class LoginForm(FlaskForm):
@@ -33,7 +35,7 @@ def load_user(user_id):
 @oauthPage.route("/login", methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
-        return render_template('home.html.j2')
+        return redirect(url_for('docs.list'))
     form=LoginForm()
     if request.method == 'POST' and form.validate():
         appConf = getAppConfig()
@@ -56,6 +58,7 @@ def login():
 
 
 @oauthPage.route("/logout")
+@roles_required(['a','b'])
 def logout():
     logout_user()
     return redirect(url_for('index'))

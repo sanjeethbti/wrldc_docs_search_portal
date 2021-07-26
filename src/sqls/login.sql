@@ -3,5 +3,6 @@ CREATE TABLE WRLDC_REST_SUBSET.USER_LOGIN (
     user_id NUMBER(5)  NOT NULL,
     password VARCHAR2(10)  NOT NULL,
     role VARCHAR2(1)  NOT NULL,
+    name VARCHAR2(50)  NULL,
     UNIQUE(user_id)
 );
