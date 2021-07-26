@@ -169,7 +169,7 @@ def updateUKeyword():
     cRepo_init = cRepo(appConf['appDbConnStr'])
     form =updateKeywordForm()
     isSuccess = cRepo_init.updateUserKeyword(keywords_user=form.keywords_user.data,docid=form.docid.data,kid=form.kid.data,userid=current_user.id)
-    flash('Could not delete the code', category='error')
+    flash('Keyword By User Updated', category='success')
     return redirect(url_for('docs.list'))
 
 
