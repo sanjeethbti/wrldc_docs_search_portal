@@ -17,7 +17,7 @@ from src.app.createDocUploadEditForm import createDocUploadEditForm
 
 class docUploadForm(FlaskForm):
     regulationName = StringField('Regulation Name',
-                                 validators=[DataRequired(), Length(min=2, max=20)])
+                                 validators=[DataRequired(), Length(min=2, max=250)])
     type = SelectField('Type', choices=[('Regulation', 'Regulation'), ('SOR', 'SOR'), ('Corrigendum', 'Corrigendum')],
                        validators=[DataRequired()])
     amendmentNo = IntegerField('Amendment No', validators=[DataRequired()])
@@ -40,7 +40,7 @@ class docUploadForm(FlaskForm):
 
 class updateKeywordForm(FlaskForm):
     keywords_user = TextAreaField('Keywords By User',
-                                 validators=[DataRequired(), Length(min=2, max=20)])
+                                 validators=[DataRequired(), Length(min=2, max=250)])
     docid=HiddenField('DocId')
     kid=HiddenField('Kid')
     submit = SubmitField('Submit')
@@ -75,6 +75,7 @@ def save_picture(form_picture):
 
 
 @docsPage.route("/fileUpload", methods=['GET', 'POST'])
+@login_required
 @roles_required(["a"])
 def fileUpload():
     form = docUploadForm()
@@ -91,11 +92,12 @@ def fileUpload():
             return redirect(url_for('docs.list'))
         else:
             flash('Document uploading failed!', 'danger')
-    return render_template('docUpload.html', title='Upload Doc', form=form)
+    return render_template('docUpload.html.j2', title='Upload Doc', form=form)
 
 
 @docsPage.route('/download', defaults={'req_path': ''})
 @docsPage.route('/download/<path:req_path>')
+@login_required
 @roles_required(["a"])
 def downloadDocument(req_path):
     appConf = getAppConfig()
@@ -117,6 +119,7 @@ def downloadDocument(req_path):
 
 
 @docsPage.route('list/', methods=['GET'])
+@login_required
 @roles_required(['a','b'])
 def list():
     form=updateKeywordForm()
@@ -132,6 +135,7 @@ def list():
 
 
 @docsPage.route('/delete/<codeId>', methods=['GET', 'POST'])
+@login_required
 @roles_required(['a'])
 def delete(codeId: int):
     flash('Could not delete the code', category='error')
@@ -139,6 +143,7 @@ def delete(codeId: int):
 
 
 @docsPage.route('/edit/<docId>', methods=['GET', 'POST'])
+@login_required
 @roles_required(['a'])
 def edit(docId: int):
     appConf = getAppConfig()
@@ -163,13 +168,14 @@ def edit(docId: int):
 
 
 @docsPage.route('/update', methods=[ 'POST'])
+@login_required
 @roles_required(['b'])
 def updateUKeyword():
     appConf = getAppConfig()
     cRepo_init = cRepo(appConf['appDbConnStr'])
     form =updateKeywordForm()
     isSuccess = cRepo_init.updateUserKeyword(keywords_user=form.keywords_user.data,docid=form.docid.data,kid=form.kid.data,userid=current_user.id)
-    flash('Could not delete the code', category='error')
+    flash('Keyword is updated successfully', category='success')
     return redirect(url_for('docs.list'))
 
 
