@@ -67,11 +67,11 @@ def getListForUser(appDbConnStr: str,userId:int):
             'REG_TYPE')]
         amendment_no = row[colNames.index('AMENDMENT_NO')]
         notification_date = row[colNames.index(
-            'NOTIFICATION_DATE')]
+            'NOTIFICATION_DATE')].date().strftime("%d-%m-%Y")
         effective_date = row[colNames.index(
-            'EFFECTIVE_DATE')]
+            'EFFECTIVE_DATE')].date().strftime("%d-%m-%Y")
         repeal_date = row[colNames.index(
-            'REPEAL_DATE')]
+            'REPEAL_DATE')].date().strftime("%d-%m-%Y")
         keyWords_admin = row[colNames.index(
             'KEYWORDS_ADMIN')]
         doc_ref_no = row[colNames.index(

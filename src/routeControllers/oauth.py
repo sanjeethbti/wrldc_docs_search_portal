@@ -58,6 +58,7 @@ def login():
 
 
 @oauthPage.route("/logout")
+@login_required
 @roles_required(['a','b'])
 def logout():
     logout_user()
