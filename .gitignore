@@ -8,6 +8,8 @@ __pycache__
 ~*.xlsx
 .mypy_cache/
 file_folder/
+logs/*
+!logs/.gitinclude
 
 # Distribution / packaging 
 .Python build/ 

@@ -29,7 +29,7 @@ oauthPage = Blueprint('oauth', __name__,
 def load_user(user_id):
     # Flask-Login helper to retrieve a user from our db
     sUser = session['SUSER']
-    return User(sUser['id'], sUser['name'], sUser['password'], sUser['roles'])
+    return User(sUser['id'], sUser['name'], sUser['password'], sUser['roles'],sUser['rid'])
 
 
 @oauthPage.route("/login", methods=['GET', 'POST'])
@@ -42,9 +42,9 @@ def login():
         cRepo_init = cRepo(appConf['appDbConnStr'])
         userDetails = cRepo_init.getLoginUser(userId=form.userId.data)
         if userDetails and bcrypt.check_password_hash(userDetails['password'], form.password.data):
-            user = User(id_=userDetails['userId'], name=userDetails['name'], password=userDetails['password'], roles=userDetails['role'])
+            user = User(id_=userDetails['userId'], name=userDetails['name'], password=userDetails['password'], roles=userDetails['role'],rid=userDetails['Id'])
 
-            session['SUSER'] = {'id': userDetails['userId'],
+            session['SUSER'] = {'id': userDetails['userId'],'rid': userDetails['Id'],
                         'password': userDetails['password'], 'name': userDetails['name'], 'roles': userDetails['role']}
             login_user(user, remember=form.remember.data)
             #it make to redirect to initial request user raised before it was not login
@@ -59,7 +59,6 @@ def login():
 
 @oauthPage.route("/logout")
 @login_required
-@roles_required(['a','b'])
 def logout():
     logout_user()
     return redirect(url_for('index'))

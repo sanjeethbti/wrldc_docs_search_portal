@@ -22,9 +22,9 @@
             <td>{{item.role}}</td>
             <td>{{item.name}}</td>
             <td style="max-width:2em;">
-                <a href="{{ url_for('docs.list', docId=item.id) }}">Edit</a>
+                <a href="{{ url_for('user.editUser',Id=item.id) }}">Edit</a>
                 <span>|</span>
-                <a href="{{ url_for('docs.list', docId=item.id) }}">Delete</a>
+                <a href="{{ url_for('user.delete', userId=item.id) }}">Delete</a>
             </td>
         </tr>
         {% endfor %}

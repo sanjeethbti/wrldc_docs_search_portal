@@ -68,6 +68,7 @@ def save_picture(form_picture):
     # join concatenate aii three value
     # form_pdf=secure_filename(picture_fn)
     appConf = getAppConfig()
+    print(appConf['upload_folder'])
     picture_path = os.path.join(appConf['upload_folder'], picture_fn)
     form_picture.save(picture_path)
 
@@ -118,7 +119,7 @@ def downloadDocument(req_path):
 
 
 
-@docsPage.route('list/', methods=['GET'])
+@docsPage.route('/list', methods=['GET'])
 @login_required
 @roles_required(['a','b'])
 def list():
@@ -134,11 +135,23 @@ def list():
 
 
 
-@docsPage.route('/delete/<codeId>', methods=['GET', 'POST'])
+@docsPage.route('/delete/<docId>', methods=['GET', 'POST'])
 @login_required
 @roles_required(['a'])
-def delete(codeId: int):
-    flash('Could not delete the code', category='error')
+def delete(docId: int):
+    appConf = getAppConfig()
+    cRepo_init = cRepo(appConf['appDbConnStr'])
+    doc = cRepo_init.getDocById(docId)
+    if doc == None:
+        raise werkzeug.exceptions.NotFound()
+    if request.method == 'POST':
+        isSuccess = cRepo_init.deleteDoc(docId)
+        if isSuccess:
+            flash('Successfully deleted the document', category='success')
+            return redirect(url_for('docs.list'))
+        else:
+            flash('Could not delete the document', category='error')
+    return render_template('delete.html.j2', data={'doc': doc})
 
 
 

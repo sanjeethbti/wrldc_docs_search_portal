@@ -1,181 +1,279 @@
-{% extends "layoutBase.html.j2" %}
+{% extends "layoutBase.html.j2" %} 
+{% block content %} 
+{% if data and data['docDetails'] %} 
+{# <p>{{ data.docDetails | safe }}</p> #}
 
-{% block content %}
-{% if data and data['docDetails'] %}
-{# <p>{{ data.docDetails|safe }}</p> #}
-<table id="displayTable" class="display table table-bordered table-responsive w-auto">
-    <thead>
-        
-        <tr>
-            <th>Id</th>
-            <th>Regulation Name</th>
-            <th>Reg Type</th>
-            <th>Amendment No</th>
-            <th>Notification Date</th>
-            <th>Effective Date</th>
-            <th>Repeal Date</th>
-            <th> KeyWords By Admin</th>
-            <th>Doc Ref No</th>
-            <th>Pdf File Name</th>
-            <th>Cerc Site Pdf Link</th>
-            {% if current_user.roles=='b' %}
-                <th>KeyWords By {{current_user.name}}</th>
-            {% endif %}
-            <th>Actions</th>
-        </tr>
-    </thead>    
-    <tbody>
-        {% for item in data['docDetails'] %}
-        <tr class="{{item.cssClass}}">
-            <td>{{item.id}}</td>
-            <td>{{item.regulation_name}}</td>
-            <td>{{item.reg_type}}</td>
-            <td>{{item.amendment_no}}</td>
-            <td>{{item.notification_date}}</td>
-            <td>{{item.effective_date}}</td>
-            <td>{{item.repeal_date }}</td>
-            <td>{{item.keyWords_admin}}</td>
-            <td>{{item.doc_ref_no}}</td>
-            <td><a href="{{ url_for('docs.downloadDocument', req_path=item.pdf_file_name) }}">
-                {{ item.pdf_file_name}}
-            
-            </a></td>
-            
-            <td>{{item.cerc_Site_pdf_link}}</td>
-            {% if current_user.roles=='b' %}
-                <td>{{item.keyWords_user}}</td>
-            {% endif %}
-            {% if current_user.roles=='a' %}
-            <td style="max-width:2em;">
-                <a href="{{ url_for('docs.edit', docId=item.id) }}">Edit</a>
-                <span>|</span>
-                <a href="{{ url_for('docs.list', docId=item.id) }}">Delete</a>
-            </td>
-            {% else %}
-            <td style="max-width:2em;">
-                {# <a href="{{ url_for('docs.edit', docId=item.id) }}">Add/Edit</a> #}
-                <a data-docid="{{item.id}}" data-kid="{{item.kid}}" class="btnSelect" data-toggle="modal" data-target="#deleteModal" href="#deleteModal">Add/Edit</a>
+<table
+  id="displayTable"
+  class="display table table-bordered table-responsive w-auto"
+>
+  <thead>
+    <tr>
+      <th>Id</th>
+      <th>Regulation Name</th>
+      <th>Reg Type</th>
+      <th>Amendment No</th>
+      <th>Notification Date</th>
+      <th>Effective Date</th>
+      <th>Repeal Date</th>
+      <th>KeyWords By Admin</th>
+      <th>Doc Ref No</th>
+      <th>Pdf File Name</th>
+      <th>Cerc Site Pdf Link</th>
+      {% if current_user.roles=='b' %}
+      <th>KeyWords By {{ current_user.name }}</th>
+      {% endif %}
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for item in data['docDetails'] %}
+    <tr class="{{ item.cssClass }}">
+      <td>{{ item.id }}</td>
+      <td>{{ item.regulation_name }}</td>
+      <td>{{ item.reg_type }}</td>
+      <td>{{ item.amendment_no }}</td>
+      <td>{{ item.notification_date }}</td>
+      <td>{{ item.effective_date }}</td>
+      <td>{{ item.repeal_date }}</td>
+      <td>{{ item.keyWords_admin }}</td>
+      <td>{{ item.doc_ref_no }}</td>
+      <td>
+        <a
+          href="{{ url_for('docs.downloadDocument', req_path=item.pdf_file_name) }}"
+        >
+          {{ item.pdf_file_name }}
+        </a>
+      </td>
 
-            </td>
-            {% endif %}
-        </tr>
-        {% endfor %}
-    </tbody>
-    <tfoot>
-        <tr>
-            <th>Id</th>
-            <th>Regulation Name</th>
-            <th>Reg Type</th>
-            <th>Amendment No</th>
-            <th>Notification Date</th>
-            <th>Effective Date</th>
-            <th>Repeal Date</th>
-            <th> KeyWords Admin</th>
-            <th>Doc Ref No</th>
-            <th>Pdf File Name</th>
-            <th>Cerc Site Pdf Link</th>
-            {% if current_user.roles=='b' %}
-                <th>KeyWords By {{current_user.name}}</th>
-            {% endif %}
-            <th>Actions</th>
-        </tr>
-    </tfoot>
+      <td>{{ item.cerc_Site_pdf_link }}</td>
+      {% if current_user.roles=='b' %}
+      <td>{{ item.keyWords_user }}</td>
+      {% endif %} {% if current_user.roles=='a' %}
+      <td style="max-width:2em;">
+        <a href="{{ url_for('docs.edit', docId=item.id) }}">Edit</a>
+        <span>|</span>
+        <a href="{{ url_for('docs.delete', docId=item.id) }}">Delete</a>
+      </td>
+      {% else %}
+      <td style="max-width:2em;">
+        {# <a href="{{ url_for('docs.edit', docId=item.id) }}">Add/Edit</a> #}
+        <a
+          data-docid="{{ item.id }}"
+          data-kid="{{ item.kid }}"
+          class="btnSelect"
+          data-toggle="modal"
+          data-target="#deleteModal"
+          href="#deleteModal"
+          >Add/Edit</a
+        >
+      </td>
+      {% endif %}
+    </tr>
+    {% endfor %}
+  </tbody>
+  <tfoot>
+    <tr>
+      <th>Id</th>
+      <th>Regulation Name</th>
+      <th>Reg Type</th>
+      <th>Amendment No</th>
+      <th>Notification Date</th>
+      <th>Effective Date</th>
+      <th>Repeal Date</th>
+      <th>KeyWords By Admin</th>
+      <th>Doc Ref No</th>
+      <th>Pdf File Name</th>
+      <th>Cerc Site Pdf Link</th>
+      {% if current_user.roles=='b' %}
+      <th>KeyWords By {{ current_user.name }}</th>
+      {% endif %}
+      <th>Actions</th>
+    </tr>
+  </tfoot>
 </table>
 {% endif %}
 <!-- Modal -->
-  <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+<div
+  class="modal fade"
+  id="deleteModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="deleteModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <form action="{{ url_for('docs.updateUKeyword') }}" method="POST">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="deleteModalLabel">Update Add/Edit Keyword By User </h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <h5 class="modal-title" id="deleteModalLabel">
+            Update Add/Edit Keyword By User
+          </h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
-            <form  action="{{ url_for('docs.updateUKeyword') }}" method="POST" >
-            {{ form.hidden_tag() }}
-            <!-- Text input -->
-            <div class="form-outline mb-4">
-                <!-- <input type="text" id="form6Example3" class="form-control" /> -->
-                    {% if form.keywords_user.errors %}
-                        {{ form.keywords_user(class="form-control form-control-lg is-invalid") }}
-                        <div class="invalid-feedback">
-                            {% for error in form.keywords_user.errors %}
-                                <span>{{ error }}</span>
-                            {% endfor %}
-                        </div>
-                    {% else %}
-                        {{ form.keywords_user(class="form-control form-control-lg") }}
-                    {% endif %}
-                <!-- <label class="form-label" for="form6Example3">Regulation Name</label> -->
-                {{ form.keywords_user.label(class="form-label") }}
+          {{ form.hidden_tag() }}
+          <!-- Text input -->
+          <div class="form-outline mb-4">
+            <!-- <input type="text" id="form6Example3" class="form-control" /> -->
+            {% if form.keywords_user.errors %}
+            {{ form.keywords_user(class="form-control form-control-lg is-invalid") }}
+            <div class="invalid-feedback">
+              {% for error in form.keywords_user.errors %}
+              <span>{{ error }}</span>
+              {% endfor %}
             </div>
-            
-            
+            {% else %}
+            {{ form.keywords_user(class="form-control form-control-lg") }}
+            {% endif %}
+            <!-- <label class="form-label" for="form6Example3">Regulation Name</label> -->
+            {{ form.keywords_user.label(class="form-label") }}
+          </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          {# <form action="{{ url_for('delete_post', post_id=post.id) }}" method="POST"> #}
-            {# <input class="btn btn-danger" type="submit" value="Delete"> #}
-            {{ form.submit(class="btn btn-primary btn-block mb-4") }}
-          </form>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            Close
+          </button>
+          {{ form.submit(class="btn btn-primary btn-block mb-4") }}
         </div>
       </div>
-    </div>
+    </form>
   </div>
-  <!-- Import jquery cdn -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-        integrity=
-"sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-        crossorigin="anonymous">
-    </script>
-      
-    <script src=
-"https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
-        integrity=
-"sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
-        crossorigin="anonymous">
-    </script>
-  <script type="text/javascript">
- 
-         $("#displayTable").on('click','.btnSelect',function(){
-         // get the current row
-         var currentRow=$(this).closest("tr"); 
-         var col1=currentRow.find("td:eq(10)").text();
-         var col2=currentRow.find(".btnSelect");
-         var col3=col2.data("docid");
-         var col4=col2.data("kid");
-           {# alert(col1+"\n"+col3+"\n"+col4); #}
-            $(".modal-body #keywords_user").val(col1);
-            $(".modal-body #docid").val(col3);
-            $(".modal-body #kid").val(col4);
-        });
-     
-    </script>
-{% endblock %}
-{% block scripts %}
-<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='node_modules/datatables.net-bs4/css/dataTables.bootstrap4.min.css') }}">
-<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='node_modules/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css') }}">
-<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='datatables/fixedHeader.dataTables.min.css') }}">
-<script type="application/javascript" src="{{ url_for('static', filename='node_modules/datatables.net/js/jquery.dataTables.min.js') }}"></script>
-<script type="application/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
-<script type="application/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-buttons/js/dataTables.buttons.min.js') }}"></script>
-<script type="application/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js') }}"></script>
-<script type="application/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-buttons/js/buttons.html5.min.js') }}"></script>
-<script type="application/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-buttons/js/buttons.print.min.js') }}"></script>
-<script type="application/javascript" src="{{ url_for('static', filename='node_modules/jszip/dist/jszip.min.js') }}"></script>
-<script type="application/javascript" src="{{ url_for('static', filename='node_modules/pdfmake/build/pdfmake.min.js') }}"></script>
-<script type="application/javascript" src="{{ url_for('static', filename='node_modules/pdfmake/build/vfs_fonts.js') }}"></script>
-<script type="application/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js') }}"></script>
+</div>
+<!-- Modal -->
+<!-- Import jquery cdn -->
 
-<script src="{{ url_for('static', filename='index.js') }}"></script>
+<!-- Import jquery cdn -->
+{% endblock %} {% block scripts %}
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="{{ url_for('static', filename='node_modules/datatables.net-bs4/css/dataTables.bootstrap4.min.css') }}"
+/>
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="{{ url_for('static', filename='node_modules/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css') }}"
+/>
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="{{ url_for('static', filename='datatables/fixedHeader.dataTables.min.css') }}"
+/>
+<script
+  type="application/javascript"
+  src="{{ url_for('static', filename='node_modules/datatables.net/js/jquery.dataTables.min.js') }}"
+></script>
+<script
+  type="application/javascript"
+  src="{{ url_for('static', filename='node_modules/datatables.net-bs4/js/dataTables.bootstrap4.min.js') }}"
+></script>
+<script
+  type="application/javascript"
+  src="{{ url_for('static', filename='node_modules/datatables.net-buttons/js/dataTables.buttons.min.js') }}"
+></script>
+<script
+  type="application/javascript"
+  src="{{ url_for('static', filename='node_modules/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js') }}"
+></script>
+<script
+  type="application/javascript"
+  src="{{ url_for('static', filename='node_modules/datatables.net-buttons/js/buttons.html5.min.js') }}"
+></script>
+<script
+  type="application/javascript"
+  src="{{ url_for('static', filename='node_modules/datatables.net-buttons/js/buttons.print.min.js') }}"
+></script>
+<script
+  type="application/javascript"
+  src="{{ url_for('static', filename='node_modules/jszip/dist/jszip.min.js') }}"
+></script>
+<script
+  type="application/javascript"
+  src="{{ url_for('static', filename='node_modules/pdfmake/build/pdfmake.min.js') }}"
+></script>
+<script
+  type="application/javascript"
+  src="{{ url_for('static', filename='node_modules/pdfmake/build/vfs_fonts.js') }}"
+></script>
+<script
+  type="application/javascript"
+  src="{{ url_for('static', filename='node_modules/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js') }}"
+></script>
+
+<script type="application/javascript">
+  $(document).ready(function() {
+      // Setup - add a text input to each footer cell
+      $('#displayTable tfoot th').each(function () {
+          //var title = $(this).text();
+          $(this).html('<input type="text" placeholder="Search" />');
+      });
+
+      var filesTable = $('#displayTable').DataTable({
+          fixedHeader: true,
+          lengthMenu: [[5, 10, 20, 50, 100, -1], [5, 10, 20, 50, 100, "All"]],
+          pageLength: 50,
+          dom: 'Bfrtip',
+          order: [[1, "desc"]],
+          columnDefs: [
+              {
+                  "targets": [0],
+                  "visible": false,
+                  "searchable": false
+              }
+          ],
+          buttons: ['pageLength', 'copy', 'excel', 'pdf', 'csv', 'print']
+      });
+
+      var r = $('#displayTable tfoot tr');
+      r.find('th').each(function () {
+          $(this).css('padding', '3px');
+      });
+      $('#displayTable thead').append(r);
+      // Apply the filter
+      // https://www.jqueryscript.net/demo/DataTables-Jquery-Table-Plugin/examples/api/multi_filter.html
+      $("#displayTable thead input").on('keyup change', function () {
+          filesTable
+              .column($(this).parent().index() + ':visible')
+              .search(this.value)
+              .draw();
+      });
+
+      // // setup double click to redirect to edit page
+      // $('#displayTable tbody').on('dblclick', 'tr', function () {
+      // // get the row data from table
+      // var data = filesTable.row(this).data();
+      // // Simulate a mouse click:
+      // window.location.href = editCodeBaseUrl_g + data[0];
+      // });
+
+      $("#displayTable").on('click','.btnSelect',function(){
+              // get the current row
+              var currentRow=$(this).closest("tr");
+              var col1=currentRow.find("td:eq(10)").text();
+              var col2=currentRow.find(".btnSelect");
+              var col3=col2.data("docid");
+              var col4=col2.data("kid");
+              {# alert(col1+"\n"+col3+"\n"+col4); #}
+                  $(".modal-body #keywords_user").val(col1);
+                  $(".modal-body #docid").val(col3);
+                  $(".modal-body #kid").val(col4);
+          });
+  });
+</script>
 <style>
-    thead input {
-        padding: 2px;
-        box-sizing: border-box;
-        font-size: small;
-        width: 100%;
-    }
+  thead input {
+    padding: 2px;
+    box-sizing: border-box;
+    font-size: small;
+    width: 100%;
+  }
 </style>
 {% endblock %}

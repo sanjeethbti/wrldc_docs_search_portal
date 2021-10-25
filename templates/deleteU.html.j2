@@ -1,0 +1,35 @@
+{% extends "layoutBase.html.j2" %}
+{% block title %}Delete{% endblock %}
+
+{% block head %}
+{{ super() }}
+{% endblock %}
+
+{% block content %}
+<h3>Delete a User</h3>
+<form method="post">
+{# <input type='hidden' name='id' id='id' value="{{ data.doc.id }}"> #}
+  <h3>Are you sure you want to delete the user?</h3>
+{# <pre>{{ data.code|safe }}</pre> #}
+  
+  <p><input type="submit" value="Delete Document" class="btn btn-sm btn-danger"/>
+</form>
+
+<br/>
+
+<p><a href="{{ url_for('user.uList') }}">< Back to User List</a></p>
+{% endblock %}
+{% block scripts %}
+<style>
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+</style>
+{% endblock %}

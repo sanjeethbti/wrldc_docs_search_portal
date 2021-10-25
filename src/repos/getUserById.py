@@ -4,12 +4,12 @@ from typing import List
 
 
 
-def getLoginUser(appDbConnStr: str, userId:int):
-    targetColumns = ['ID','USER_ID', 'PASSWORD' ,'ROLE', 'NAME']
+def getUserById(appDbConnStr: str, Id:int):
+    targetColumns = ['ID','USER_ID','PASSWORD' ,'ROLE', 'NAME']
 
     metricsFetchSql = """
             select {0} from 
-            WRLDC_REST_SUBSET.USER_LOGIN where USER_ID = :1 """.format(','.join(targetColumns))
+            WRLDC_REST_SUBSET.USER_LOGIN where ID = :1 """.format(','.join(targetColumns))
     # initialise codes to be returned
     # dataRecords = []
     colNames = []
@@ -22,7 +22,7 @@ def getLoginUser(appDbConnStr: str, userId:int):
 
         # get cursor and execute fetch sql
         dbCur = dbConn.cursor()
-        dbCur.execute(metricsFetchSql,(userId,))
+        dbCur.execute(metricsFetchSql,(Id,))
         #print(dbCur.statement)
         colNames = [row[0] for row in dbCur.description]
 

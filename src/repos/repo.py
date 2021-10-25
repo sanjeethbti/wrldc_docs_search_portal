@@ -8,8 +8,11 @@ from src.repos.getDocById import getDocById
 from src.repos.editDocUploadForm import editDocUploadForm
 from src.repos.getListForUser import getListForUser
 from src.repos.updateUserKeyword import updateUserKeyword
-
-
+from src.repos.editUser import editUser
+from src.repos.getUserById import getUserById
+from src.repos.cPassword import cPassword
+from src.repos.deleteDoc import deleteDoc
+from src.repos.deleteUser import deleteUser
 
 
 class cRepo():
@@ -47,6 +50,31 @@ class cRepo():
         user = getLoginUser(self.appDbConnStr, userId)
         return user
 
+    def getUserById(self, Id: int):
+        """inserts a generic code into the app db
+        Returns:
+            bool: returns true if process is ok
+        """
+        user = getUserById(self.appDbConnStr, Id)
+        return user
+
+    def deleteDoc(self, docId: int):
+        """inserts a generic code into the app db
+        Returns:
+            bool: returns true if process is ok
+        """
+        user = deleteDoc(self.appDbConnStr, docId)
+        return user
+
+
+    def deleteUser(self, userId: int):
+        """inserts a generic code into the app db
+        Returns:
+            bool: returns true if process is ok
+        """
+        user = deleteUser(self.appDbConnStr, userId)
+        return user
+
 
     def getList(self):
         return getList(self.appDbConnStr)
@@ -62,6 +90,24 @@ class cRepo():
             bool: returns true if process is ok
         """
         isInsertSuccess = addUser(self.appDbConnStr, user_id, password, role,name)
+        return isInsertSuccess
+
+    def editUser(self, id: int,
+                      password: str, role: str) -> bool:
+        """inserts a generic code into the app db
+        Returns:
+            bool: returns true if process is ok
+        """
+        isInsertSuccess = editUser(self.appDbConnStr, id, password, role)
+        return isInsertSuccess
+
+    def cPassword(self, id: int,
+                      password: str) -> bool:
+        """inserts a generic code into the app db
+        Returns:
+            bool: returns true if process is ok
+        """
+        isInsertSuccess = cPassword(self.appDbConnStr, id, password)
         return isInsertSuccess
 
 

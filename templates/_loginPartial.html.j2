@@ -7,6 +7,11 @@
                 </a>
             </li>
             <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('docs.list') }}">
+                    <span class="mr-2 d-lg-inline text-gray-600">List</span>
+                </a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" href="{{ url_for('user.addUser') }}">
                     <span class="mr-2 d-lg-inline text-gray-600"> Add User</span>
                 </a>
@@ -17,11 +22,31 @@
                     <span class="mr-2 d-lg-inline text-gray-600"> User List</span>
                 </a>
             </li>
-        {% endif %}
+        
         <!-- Nav Item - User Information -->
         <li class="nav-item dropdown no-arrow">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <span class="mr-2 d-lg-inline text-gray-600">{{current_user.name}}</span>
+            </a>
+            <!-- Dropdown - User Information -->
+            <div class="dropdown-menu dropdown-menu-right ">
+                <a class="dropdown-item" href='#'>
+                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                    Profile
+                </a>
+                
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="{{ url_for('oauth.logout') }}">
+                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                    Logout
+                </a>
+                
+            </div>
+        </li>
+        {% else %}
+            <li class="nav-item dropdown no-arrow">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="mr-2 d-lg-inline text-gray-600">{{current_user.name}}|{{current_user.roles}}</span>
             </a>
             <!-- Dropdown - User Information -->
             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in">
@@ -30,12 +55,22 @@
                     Profile
                 </a>
                 <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="{{ url_for('user.cPassword',Id=current_user.rid) }}">
+                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                    Change Password
+                </a>
+                <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="{{ url_for('oauth.logout') }}">
                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                     Logout
                 </a>
+                
             </div>
         </li>
+        {% endif %}
+
+
+
     {% else %}
         <li class="nav-item">
             <a class="nav-link" href="{{ url_for('oauth.login') }}">

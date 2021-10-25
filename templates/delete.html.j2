@@ -1,0 +1,80 @@
+{% extends "layoutBase.html.j2" %}
+{% block title %}Delete{% endblock %}
+
+{% block head %}
+{{ super() }}
+{% endblock %}
+
+{% block content %}
+<h3>Delete a Document</h3>
+<form method="post">
+{# <input type='hidden' name='id' id='id' value="{{ data.doc.id }}"> #}
+  <h3>Are you sure you want to delete the document?</h3>
+{# <pre>{{ data.code|safe }}</pre> #}
+  <table>
+    <tr>
+      <td>Regulation Name</td>
+      <td>{{ data.doc.regulation_name }}</td>
+    </tr>
+    <tr>
+      <td>Reg Type</td>
+      <td>{{ data.doc.reg_type }}</td>
+    </tr>
+    <tr>
+      <td>Amendment No</td>
+      <td>{{ data.doc.amendment_no }}</td>
+    </tr>
+    <tr>
+      <td>Notification Date</td>
+      <td>{{ data.doc.notification_date }}</td>
+    </tr>
+    <tr>
+      <td>Effective Date</td>
+      <td>{{ data.doc.effective_date }}</td>
+    </tr>
+    <tr>
+      <td>Repeal Date</td>
+      <td>{{ data.doc.repeal_date }}</td>
+    </tr>
+    <tr>
+      <td>KeyWords By Admin</td>
+      <td>{{ data.doc.keyWords_admin }}</td>
+    </tr>
+    <tr>
+      <td>Doc Ref No</td>
+      <td>{{ data.doc.doc_ref_no }}</td>
+    </tr>
+    <tr>
+      <td>Pdf File Name</td>
+      <td><a href="{{ url_for('docs.downloadDocument', req_path=data.doc.pdf_file_name) }}">
+                {{ data.doc.pdf_file_name}}
+            
+            </a></td>
+    </tr>
+    <tr>
+      <td>Cerc Site Pdf Link</td>
+      <td>{{ data.doc.cerc_Site_pdf_link}}</td>
+    </tr>
+    
+  </table>
+  <p><input type="submit" value="Delete Document" class="btn btn-sm btn-danger"/>
+</form>
+
+<br/>
+
+<p><a href="{{ url_for('docs.list') }}">< Back to Codes List</a></p>
+{% endblock %}
+{% block scripts %}
+<style>
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+</style>
+{% endblock %}

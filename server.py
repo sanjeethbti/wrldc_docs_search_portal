@@ -31,9 +31,9 @@ bcrypt.init_app(app)
 login_manager.init_app(app)
 
 # login_manager = LoginManager(app)
-# login view is used to tell login manager where is our login route in order to check login_required decorator, login is funtion name
+# login view is used to tell login manager where is our login route in order to check login_required decorator, login is function name
 login_manager.login_view = 'login'
-# bbotstrap alert category message
+# bootstrap alert category message
 login_manager.login_message_category = 'info'
 
 
